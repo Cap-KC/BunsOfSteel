@@ -382,47 +382,10 @@ function openWorkoutModal(workout) {
     
     modal.classList.add('active');
 }
-
-function startWorkout(workout) {
-    // Update stats
-    userStats.totalCalories += workout.calories;
-    userStats.totalTime += workout.duration;
-    userStats.totalWorkouts += 1;
-    
-    // Update streak
-    const today = new Date().toDateString();
-    if (userStats.lastWorkoutDate !== today) {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        
-        if (userStats.lastWorkoutDate === yesterday.toDateString()) {
-            userStats.currentStreak += 1;
-        } else {
-            userStats.currentStreak = 1;
-        }
-        
-        userStats.lastWorkoutDate = today;
-    }
     
     // Add to history
-    userStats.workoutHistory.push({
-        workout: workout,
-        date: new Date().toISOString(),
-        completed: true
-    });
     
-    // Check achievements
-    checkAchievements();
-    
-    // Save and update
-    saveUserStats();
-    updateStatsDisplay();
-    renderCharts();
-    
-    // Close modal and show success
-    document.getElementById('workoutModal').classList.remove('active');
-    alert(`Great job! You completed ${workout.name}!\n\n+${workout.calories} calories\n+${workout.duration} minutes`);
-}
+
 
 // Calendar
 function setupCalendar() {
@@ -541,26 +504,22 @@ const exerciseInstructions = {
 
 // Update the startWorkout function
 function startWorkout(workout) {
-    // Store current workout
+    // Prevent starting if a workout is already running
+    if (timerInterval) return;
+
     currentWorkout = workout;
-    
-    // Calculate calories per second based on workout calories and duration
     caloriesPerSecond = workout.calories / (workout.duration * 60);
-    
-    // Get exercises for this workout type
     workoutExercises = getExercisesForWorkout(workout);
     currentExerciseIndex = 0;
     timerSeconds = 0;
-    
-    // Setup timer modal
+    workoutPaused = false;
+
     setupTimerModal(workout);
-    
-    // Close the workout detail modal
+
     document.getElementById('workoutModal').classList.remove('active');
-    
-    // Show timer modal
     document.getElementById('workoutTimerModal').classList.add('active');
 }
+
 
 function getExercisesForWorkout(workout) {
     // Get base exercises for the workout type
@@ -581,7 +540,10 @@ function setupTimerModal(workout) {
     document.getElementById('timerWorkoutType').textContent = workout.type.charAt(0).toUpperCase() + workout.type.slice(1);
     
     // Setup timer controls
-    document.getElementById('startTimer').onclick = startTimer;
+    const startBtn = document.getElementById('startTimer');
+
+document.getElementById('startTimer').onclick = startTimer;
+
     document.getElementById('pauseTimer').onclick = pauseTimer;
     document.getElementById('skipExercise').onclick = skipExercise;
     document.getElementById('completeWorkout').onclick = completeWorkout;
@@ -599,28 +561,32 @@ function setupTimerModal(workout) {
 }
 
 function startTimer() {
-    if (workoutPaused) {
-        workoutPaused = false;
-        document.getElementById('startTimer').innerHTML = '<i class="fas fa-pause"></i> Pause';
-        document.getElementById('startTimer').classList.remove('start-btn');
-        document.getElementById('startTimer').classList.add('pause-btn');
-    } else {
-        timerInterval = setInterval(updateTimer, 1000);
-        workoutPaused = false;
-        document.getElementById('startTimer').innerHTML = '<i class="fas fa-pause"></i> Pause';
-        document.getElementById('startTimer').classList.remove('start-btn');
-        document.getElementById('startTimer').classList.add('pause-btn');
-    }
+    if (timerInterval !== null) return; // 🛑 absolute lock
+
+    workoutPaused = false;
+    timerInterval = setInterval(updateTimer, 1000);
+
+    const btn = document.getElementById('startTimer');
+    btn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+    btn.classList.remove('start-btn');
+    btn.classList.add('pause-btn');
 }
 
+
+
 function pauseTimer() {
+    if (!timerInterval) return;
+
     clearInterval(timerInterval);
     timerInterval = null;
     workoutPaused = true;
-    document.getElementById('startTimer').innerHTML = '<i class="fas fa-play"></i> Resume';
-    document.getElementById('startTimer').classList.remove('pause-btn');
-    document.getElementById('startTimer').classList.add('start-btn');
+
+    const btn = document.getElementById('startTimer');
+    btn.innerHTML = '<i class="fas fa-play"></i> Resume';
+    btn.classList.remove('pause-btn');
+    btn.classList.add('start-btn');
 }
+
 
 function skipExercise() {
     if (currentExerciseIndex < workoutExercises.length - 1) {
@@ -707,33 +673,32 @@ function updateProgress() {
 }
 
 function completeWorkout() {
-    clearInterval(timerInterval);
-    
-    // Calculate actual calories burned based on time
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+
     const actualCalories = Math.round(timerSeconds * caloriesPerSecond);
     const actualMinutes = Math.floor(timerSeconds / 60);
-    
-    // Update stats with actual values
+
     userStats.totalCalories += actualCalories;
     userStats.totalTime += actualMinutes;
     userStats.totalWorkouts += 1;
-    
-    // Update streak
+
     const today = new Date().toDateString();
     if (userStats.lastWorkoutDate !== today) {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        
+
         if (userStats.lastWorkoutDate === yesterday.toDateString()) {
             userStats.currentStreak += 1;
         } else {
             userStats.currentStreak = 1;
         }
-        
+
         userStats.lastWorkoutDate = today;
     }
-    
-    // Add to history
+
     userStats.workoutHistory.push({
         workout: currentWorkout,
         date: new Date().toISOString(),
@@ -741,28 +706,26 @@ function completeWorkout() {
         duration: actualMinutes,
         calories: actualCalories
     });
-    
-    // Check achievements
+
     checkAchievements();
-    
-    // Save and update
     saveUserStats();
     updateStatsDisplay();
     renderCharts();
-    
-    // Close timer modal
+
     document.getElementById('workoutTimerModal').classList.remove('active');
-    
-    // Show completion message
-    alert(`🎉 Workout Complete!\n\n${currentWorkout.name}\nDuration: ${Math.floor(timerSeconds / 60)}:${(timerSeconds % 60).toString().padStart(2, '0')}\nCalories Burned: ${actualCalories}`);
-    
-    // Reset timer
+
+    alert(`🎉 Workout Complete!\n\n${currentWorkout.name}\nCalories: ${actualCalories}`);
+
     resetTimer();
 }
 
+
 function resetTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+
     timerSeconds = 0;
     workoutPaused = false;
     currentWorkout = null;
@@ -771,27 +734,9 @@ function resetTimer() {
     caloriesPerSecond = 0;
 }
 
+
 // Add notification permission request at app initialization
-function initializeApp() {
-    // Request notification permission
-    if ('Notification' in window && Notification.permission === 'default') {
-        Notification.requestPermission();
-    }
-    
-    // Rest of existing initialization code...
-    setupTabNavigation();
-    renderWorkouts();
-    setupCarousel();
-    setupFilters();
-    setupQuickStart();
-    setupCalendar();
-    setupCategories();
-    updateStatsDisplay();
-    renderCharts();
-    renderAchievements();
-    setupModal();
-    setupTimerModalHandlers();
-}
+
 
 // Add timer modal handlers
 function setupTimerModalHandlers() {
