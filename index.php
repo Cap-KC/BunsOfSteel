@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BunsOfSteel - Online Fitness Tracker</title>
+    <title>MoversOdessy - Online Fitness Tracker</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -13,7 +13,7 @@
         <div class="nav-container">
             <div class="logo">
                 <i class="fa-solid fa-dumbbell"></i>
-                <span>BunsOfSteel</span>
+                <span>MoversOdessy</span>
             </div>
             <div class="nav-right">
                 <button class="icon-btn" id="profileBtn">
