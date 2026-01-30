@@ -15,7 +15,6 @@
                 <i class="fa-solid fa-dumbbell"></i>
                 <span>MoversOdessy</span>
             </div>
-            <div class="nav-right">
                 <button class="icon-btn" id="profileBtn">
                     <i class="fas fa-user-circle"></i>
                 </button>
@@ -27,19 +26,6 @@
     </nav>
 
     <!-- Main Navigation Tabs -->
-    <div class="tab-navigation">
-        <button class="tab-btn active" data-tab="home">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </button>
-        <button class="tab-btn" data-tab="planner">
-            <i class="fas fa-calendar-alt"></i>
-            <span>Planner</span>
-        </button>
-        <button class="tab-btn" data-tab="stats">
-            <i class="fas fa-chart-line"></i>
-            <span>Stats</span>
-        </button>
         <button class="tab-btn" data-tab="about">
             <i class="fas fa-info-circle"></i>
             <span>About</span>
@@ -219,13 +205,13 @@
 
         <!-- ABOUT TAB -->
         <div class="tab-content" id="about-tab">
-            <h2>About BunsOfSteel</h2>
+            <h2>About MoversOdessy</h2>
             
             <section class="about-section">
                 <div class="about-card">
                     <i class="fas fa-bullseye"></i>
                     <h3>Our Mission</h3>
-                    <p>BunsOfSteel is dedicated to making fitness accessible and enjoyable for everyone. We provide comprehensive workout tracking, personalized plans, and motivational tools to help you achieve your fitness goals.</p>
+                    <p>MoversOdessy is dedicated to making fitness accessible and enjoyable for everyone. We provide comprehensive workout tracking, personalized plans, and motivational tools to help you achieve your fitness goals.</p>
                 </div>
 
                 <div class="about-card">
