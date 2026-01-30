@@ -1073,3 +1073,409 @@ body {
         font-size: 2.5rem;
     }
 }
+/* BMI Calculator Styles */
+.bmi-section {
+    background: var(--bg-card);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.bmi-section h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bmi-section h3 i {
+    color: var(--accent-2);
+}
+
+.bmi-calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.bmi-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    align-items: end;
+}
+
+.bmi-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.bmi-input-group label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.bmi-input-group input {
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.bmi-input-group input:focus {
+    outline: none;
+    border-color: var(--accent-2);
+}
+
+.calculate-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--gradient-4);
+    border: none;
+    border-radius: 8px;
+    color: var(--bg-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.calculate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+}
+
+.bmi-result {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bmi-value {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--gradient-1);
+    border-radius: 12px;
+}
+
+.bmi-number {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.bmi-label {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.bmi-category {
+    text-align: center;
+}
+
+.category-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.category-badge.underweight {
+    background: #ffd93d;
+    color: var(--bg-primary);
+}
+
+.category-badge.normal {
+    background: #6bcf7f;
+    color: var(--bg-primary);
+}
+
+.category-badge.overweight {
+    background: #ff9800;
+    color: white;
+}
+
+.category-badge.obese {
+    background: #f44336;
+    color: white;
+}
+
+#categoryDescription {
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+.bmi-scale {
+    padding: 1rem 0;
+}
+
+.scale-bar {
+    height: 30px;
+    background: linear-gradient(to right, #ffd93d 0%, #6bcf7f 25%, #6bcf7f 50%, #ff9800 50%, #ff9800 75%, #f44336 75%);
+    border-radius: 15px;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.scale-indicator {
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid white;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: left 0.5s ease;
+}
+
+.scale-labels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Recommended Workouts */
+.recommended-workouts {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.recommended-workouts h4 {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recommended-workouts h4 i {
+    color: var(--accent-3);
+}
+
+.recommended-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.workout-card-mini {
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.workout-card-mini:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+}
+
+.workout-card-mini .workout-card-body {
+    padding: 1rem;
+}
+
+.workout-card-mini h4 {
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.workout-card-mini .workout-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.workout-card-mini .workout-stats i {
+    color: var(--accent-2);
+}
+
+/* Meal Plan Section */
+.meal-plan-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.meal-plan-section h4 {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.meal-plan-section h4 i {
+    color: var(--accent-1);
+}
+
+.meal-plan-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.calorie-target {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--gradient-5);
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.calorie-target i {
+    font-size: 2rem;
+    color: white;
+}
+
+.calorie-target h5 {
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.calorie-target p {
+    color: white;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.meal-plan-details p {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.meal-plan-details strong {
+    color: var(--text-primary);
+}
+
+.meal-plan-details ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin: 1rem 0;
+}
+
+.meal-plan-details ul li {
+    color: var(--text-secondary);
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.meal-plan-details ul li::before {
+    content: "✓";
+    color: var(--accent-2);
+    font-weight: bold;
+    position: absolute;
+    left: -1rem;
+}
+
+.meal-note {
+    background: rgba(78, 205, 196, 0.1);
+    border-left: 3px solid var(--accent-2);
+    padding: 0.75rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.meal-note i {
+    color: var(--accent-2);
+}
+
+/* Responsive Design for BMI Calculator */
+@media (max-width: 768px) {
+    .bmi-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .calculate-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .recommended-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .bmi-number {
+        font-size: 2.5rem;
+    }
+}
+
+/* User Greeting and Logout Button */
+.user-greeting {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-right: 1rem;
+    font-weight: 500;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#logoutBtn {
+    background: rgba(255, 107, 107, 0.1);
+    transition: all 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background: rgba(255, 107, 107, 0.2);
+    color: var(--accent-1);
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .user-greeting {
+        display: none;
+    }
+}

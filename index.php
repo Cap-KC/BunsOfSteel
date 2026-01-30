@@ -1,3 +1,10 @@
+<?php
+session_start();
+
+// Check if user is logged in
+// Since we're using client-side localStorage authentication, 
+// we'll check via JavaScript and redirect if needed
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +13,22 @@
     <title>BunsOfSteel - Online Fitness Tracker</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Session Check Script -->
+    <script>
+        // Check if user is logged in (via localStorage)
+        window.addEventListener('DOMContentLoaded', function() {
+            const currentUser = localStorage.getItem('bunsofsteel_current_user');
+            if (!currentUser) {
+                // No user logged in, redirect to login page
+                window.location.href = 'login.php';
+            } else {
+                // User is logged in, show welcome message
+                const user = JSON.parse(currentUser);
+                console.log('Welcome back, ' + user.name + '!');
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Top Navigation Bar -->
@@ -16,11 +39,15 @@
                 <span>BunsOfSteel</span>
             </div>
             <div class="nav-right">
+                <span class="user-greeting" id="userGreeting">Welcome!</span>
                 <button class="icon-btn" id="profileBtn">
                     <i class="fas fa-user-circle"></i>
                 </button>
                 <button class="icon-btn" id="settingsBtn">
                     <i class="fas fa-cog"></i>
+                </button>
+                <button class="icon-btn" id="logoutBtn" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
         </div>
@@ -115,6 +142,83 @@
         <!-- PLANNER TAB -->
         <div class="tab-content" id="planner-tab">
             <h2>Workout Planner</h2>
+            
+            <!-- BMI Calculator -->
+            <section class="bmi-section">
+                <h3><i class="fas fa-calculator"></i> BMI Calculator & Personalized Plan</h3>
+                <div class="bmi-calculator">
+                    <div class="bmi-inputs">
+                        <div class="bmi-input-group">
+                            <label for="heightInput">Height (cm)</label>
+                            <input type="number" id="heightInput" placeholder="170" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="bmi-input-group">
+                            <label for="weightInput">Weight (kg)</label>
+                            <input type="number" id="weightInput" placeholder="70" min="0" step="0.1">
+                        </div>
+                        
+                        <button class="calculate-btn" id="calculateBMI">
+                            <i class="fas fa-calculator"></i> Calculate BMI
+                        </button>
+                    </div>
+                    
+                    <div class="bmi-result" id="bmiResult" style="display: none;">
+                        <div class="bmi-value">
+                            <div class="bmi-number" id="bmiNumber">0</div>
+                            <div class="bmi-label">Your BMI</div>
+                        </div>
+                        <div class="bmi-category" id="bmiCategory">
+                            <span class="category-badge" id="categoryBadge">Normal</span>
+                            <p id="categoryDescription">You are within the healthy weight range</p>
+                        </div>
+                        <div class="bmi-scale">
+                            <div class="scale-bar">
+                                <div class="scale-indicator" id="bmiIndicator"></div>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Underweight<br>&lt;18.5</span>
+                                <span>Normal<br>18.5-24.9</span>
+                                <span>Overweight<br>25-29.9</span>
+                                <span>Obese<br>≥30</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Recommended Workouts -->
+                        <div class="recommended-workouts" id="recommendedWorkouts">
+                            <h4><i class="fas fa-star"></i> Recommended Workouts for You</h4>
+                            <div class="recommended-grid" id="recommendedGrid">
+                                <!-- Workout recommendations will be added here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Meal Plan Section -->
+                        <div class="meal-plan-section" id="mealPlanSection" style="display: none;">
+                            <h4><i class="fas fa-utensils"></i> Recommended Meal Plan</h4>
+                            <div class="meal-plan-card">
+                                <div class="calorie-target">
+                                    <i class="fas fa-fire"></i>
+                                    <div>
+                                        <h5>Daily Calorie Target</h5>
+                                        <p id="calorieTarget">1800-1900 calories</p>
+                                    </div>
+                                </div>
+                                <div class="meal-plan-details">
+                                    <p><strong>Focus on:</strong></p>
+                                    <ul>
+                                        <li>High-protein meals (lean meats, fish, eggs, legumes)</li>
+                                        <li>Complex carbohydrates (whole grains, sweet potatoes)</li>
+                                        <li>Healthy fats (nuts, avocado, olive oil)</li>
+                                        <li>Plenty of fruits and vegetables</li>
+                                        <li>Stay hydrated - drink 8-10 glasses of water daily</li>
+                                    </ul>
+                                    <p class="meal-note"><i class="fas fa-info-circle"></i> Consult with a nutritionist for a personalized meal plan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
             
             <!-- Workout Categories -->
             <section class="categories-section">
