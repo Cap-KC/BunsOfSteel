@@ -159,8 +159,34 @@ function saveUserStats() {
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
     loadUserStats();
+    displayUserGreeting();
     initializeApp();
 });
+
+// Display user greeting
+function displayUserGreeting() {
+    const currentUser = localStorage.getItem('bunsofsteel_current_user');
+    if (currentUser) {
+        const user = JSON.parse(currentUser);
+        const greetingElement = document.getElementById('userGreeting');
+        if (greetingElement) {
+            greetingElement.textContent = `Welcome, ${user.name}!`;
+        }
+    }
+}
+
+// Logout functionality
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        const confirmLogout = confirm('Are you sure you want to logout?');
+        if (confirmLogout) {
+            localStorage.removeItem('bunsofsteel_current_user');
+            localStorage.removeItem('bunsofsteel_remember');
+            window.location.href = 'login.php';
+        }
+    });
+}
 
 function initializeApp() {
     // Tab navigation
@@ -1024,3 +1050,100 @@ document.getElementById('settingsBtn').addEventListener('click', () => {
         alert('All progress has been reset!');
     }
 });
+// BMI Calculator Functionality
+document.getElementById('calculateBMI').addEventListener('click', calculateBMI);
+
+function calculateBMI() {
+    const height = parseFloat(document.getElementById('heightInput').value);
+    const weight = parseFloat(document.getElementById('weightInput').value);
+    
+    // Validate inputs
+    if (!height || !weight || height <= 0 || weight <= 0) {
+        alert('Please enter valid height and weight values');
+        return;
+    }
+    
+    // Calculate BMI
+    const heightInMeters = height / 100;
+    const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
+    
+    // Display result
+    document.getElementById('bmiResult').style.display = 'block';
+    document.getElementById('bmiNumber').textContent = bmi;
+    
+    // Determine category and recommendations
+    let category, description, badgeClass, indicatorPosition, workoutIds, showMealPlan;
+    
+    if (bmi < 18.5) {
+        category = 'Underweight';
+        description = 'Focus on strength training and increase caloric intake';
+        badgeClass = 'underweight';
+        indicatorPosition = (bmi / 18.5) * 25; // 0-25% of scale
+        workoutIds = []; // No workouts, show meal plan instead
+        showMealPlan = true;
+    } else if (bmi >= 18.5 && bmi < 25) {
+        category = 'Normal Weight';
+        description = 'You are within the healthy weight range. Maintain your fitness!';
+        badgeClass = 'normal';
+        indicatorPosition = 25 + ((bmi - 18.5) / (25 - 18.5)) * 25; // 25-50% of scale
+        workoutIds = [2, 3, 5, 7, 8, 9, 10, 12]; // All advanced/intermediate workouts
+        showMealPlan = false;
+    } else if (bmi >= 25) {
+        category = 'Overweight';
+        description = 'Focus on cardio and low-impact exercises to start';
+        badgeClass = 'overweight';
+        indicatorPosition = Math.min(50 + ((bmi - 25) / 10) * 50, 100); // 50-100% of scale
+        workoutIds = [1, 4, 6, 11]; // Beginner/cardio workouts
+        showMealPlan = false;
+    }
+    
+    // Update category display
+    const categoryBadge = document.getElementById('categoryBadge');
+    categoryBadge.textContent = category;
+    categoryBadge.className = `category-badge ${badgeClass}`;
+    document.getElementById('categoryDescription').textContent = description;
+    
+    // Update indicator position
+    document.getElementById('bmiIndicator').style.left = `${indicatorPosition}%`;
+    
+    // Show meal plan or workout recommendations
+    if (showMealPlan) {
+        document.getElementById('mealPlanSection').style.display = 'block';
+        document.getElementById('recommendedWorkouts').style.display = 'none';
+    } else {
+        document.getElementById('mealPlanSection').style.display = 'none';
+        document.getElementById('recommendedWorkouts').style.display = 'block';
+        displayRecommendedWorkouts(workoutIds);
+    }
+    
+    // Scroll to results
+    document.getElementById('bmiResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function displayRecommendedWorkouts(workoutIds) {
+    const grid = document.getElementById('recommendedGrid');
+    grid.innerHTML = '';
+    
+    workoutIds.forEach(id => {
+        const workout = workouts.find(w => w.id === id);
+        if (workout) {
+            const card = document.createElement('div');
+            card.className = 'workout-card-mini';
+            card.innerHTML = `
+                <div class="workout-card-header ${workout.type}">
+                    <i class="fas ${workout.icon}"></i>
+                </div>
+                <div class="workout-card-body">
+                    <h4>${workout.name}</h4>
+                    <div class="workout-stats">
+                        <span><i class="fas fa-fire"></i> ${workout.calories} cal</span>
+                        <span><i class="fas fa-clock"></i> ${workout.duration} min</span>
+                    </div>
+                    <span class="difficulty-badge ${workout.difficulty}">${workout.difficulty}</span>
+                </div>
+            `;
+            card.addEventListener('click', () => openWorkoutModal(workout));
+            grid.appendChild(card);
+        }
+    });
+}
