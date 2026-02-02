@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BunsOfSteel – Online Fitness Tracker</title>
+    <title>FitForge – Online Fitness Tracker</title>
     <link rel="stylesheet" href="public/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -13,7 +13,7 @@
         <div class="nav-container">
             <div class="logo">
                 <i class="fa-solid fa-carrot"></i>
-                <span>BunsOfSteel</span>
+                <span>FitForge</span>
             </div>
             <div class="nav-right">
                 <span class="user-greeting" id="userGreeting">Welcome!</span>
@@ -205,12 +205,12 @@
 
         <!-- ABOUT TAB -->
         <div class="tab-content" id="about-tab">
-            <h2>About BunsOfSteel</h2>
+            <h2>About FitForge</h2>
             <section class="about-section">
                 <div class="about-card">
                     <i class="fas fa-bullseye"></i>
                     <h3>Our Mission</h3>
-                    <p>BunsOfSteel is dedicated to making fitness accessible and enjoyable for everyone. We provide comprehensive workout tracking, personalized plans, and motivational tools to help you achieve your fitness goals.</p>
+                    <p>FitForge is dedicated to making fitness accessible and enjoyable for everyone. We provide comprehensive workout tracking, personalized plans, and motivational tools to help you achieve your fitness goals.</p>
                 </div>
                 <div class="about-card">
                     <i class="fas fa-star"></i>
